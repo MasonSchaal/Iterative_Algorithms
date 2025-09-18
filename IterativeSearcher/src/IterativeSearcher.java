@@ -2,20 +2,28 @@
 public class IterativeSearcher {
     
     public int doBinarySearch(IntegerArray arr, int value) {
-        int index = 0;
         int low = 0;
-        int high = arr.length() - 1;
-        while (true) {
-            index = (int) Math.round(((double)high + (double)low)/2.0);
-            int current = arr.read(index);
-            if (current < value) {
-                low = index;
-            } else if (current == value) {
-              break;  
-            } else {
+        int high = arr.length();
+        while (low + 1 < high) {
+            int index = (low + high)/2;
+            if (arr.read(index) > value) {
                 high = index;
+            } else {
+                low = index;
             }
         }
-        return index;
+        if (arr.read(low) == value) {
+            if (low == 0 || arr.read(low - 1) != value) {
+                return low;
+            } else {
+                while(low != 0 && arr.read(low - 1) == value) {
+                    low -= 1;
+                }
+                return low;
+            }
+        } else {
+            return -1;
+        }
+        
     }
 }
